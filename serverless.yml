@@ -49,3 +49,9 @@ functions:
       - httpApi:
           path: /movies
           method: get
+  getMovie:
+    handler: movies/getMovie.getMovie
+    events:
+      - httpApi:
+          path: /movies/{id}
+          method: get

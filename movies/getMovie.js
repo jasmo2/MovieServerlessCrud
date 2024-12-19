@@ -1,22 +1,24 @@
-const { DynamoDBClient, ScanCommand } = require("@aws-sdk/client-dynamodb")
+const { DynamoDBClient, GetItemCommand } = require("@aws-sdk/client-dynamodb")
 const { unmarshall } = require("@aws-sdk/util-dynamodb")
 
-const getMovies = async () => {
+const getMovie = async (event) => {
   try {
     const client = new DynamoDBClient()
+    const { id } = event.pathParameters
 
-    const command = new ScanCommand({
+    const command = new GetItemCommand({
       TableName: "MoviesTable",
+      Key: {
+        id: { S: id },
+      },
     })
 
     const result = await client.send(command)
-    const movies = result.Items
-      ? result.Items.map((item) => unmarshall(item))
-      : []
+    const movie = result.Item ? unmarshall(result.Item) : null
 
     return {
       statusCode: 200,
-      body: JSON.stringify(movies),
+      body: JSON.stringify(movie),
     }
   } catch (error) {
     return {
@@ -27,5 +29,5 @@ const getMovies = async () => {
 }
 
 module.exports = {
-  getMovies,
+  getMovie,
 }
