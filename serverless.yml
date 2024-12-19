@@ -37,3 +37,9 @@ functions:
       - httpApi: 
           path: /
           method: get
+  createMovie:
+    handler: movies/createMovie.createMovie
+    events:
+      - httpApi:
+          path: /movies
+          method: post
