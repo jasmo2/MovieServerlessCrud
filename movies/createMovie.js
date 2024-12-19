@@ -7,7 +7,7 @@ const createDynamoDBClient = () => {
 }
 
 const createNewMovie = (title, director, year) => {
-  const createAt = new Date()
+  const createAt = new Date().toISOString() // Convert Date to string
   const id = v4()
 
   return {
