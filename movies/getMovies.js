@@ -1,7 +1,7 @@
 const { DynamoDBClient, GetItemCommand } = require("@aws-sdk/client-dynamodb")
 const { unmarshall } = require("@aws-sdk/util-dynamodb")
 
-const getMovie = async (event) => {
+const getMovies = async (event) => {
   try {
     const client = new DynamoDBClient()
     const { id } = event.pathParameters
@@ -29,5 +29,5 @@ const getMovie = async (event) => {
 }
 
 module.exports = {
-  getMovie,
+  getMovies,
 }

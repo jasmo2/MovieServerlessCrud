@@ -28,7 +28,7 @@ const addMovieToDB = async (client, newMovie) => {
   await client.send(command)
 }
 
-const addMovie = async (event) => {
+const createMovie = async (event) => {
   const client = createDynamoDBClient()
   const { title, director, year } = JSON.parse(event.body)
   const newMovie = createNewMovie(title, director, year)
@@ -42,5 +42,5 @@ const addMovie = async (event) => {
 }
 
 module.exports = {
-  addMovie,
+  createMovie,
 }
