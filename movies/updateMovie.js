@@ -12,31 +12,37 @@ const updateMovie = async (event) => {
     const modifiedAt = new Date().toISOString()
 
     const expressionAttributeValues = {
-      ":title": title,
-      ":director": director,
       ":modifiedAt": modifiedAt,
-      ":year": year,
+    }
+    const expressionAttributeNames = {}
+    let updateExpression = "set modifiedAt = :modifiedAt"
+
+    if (title !== undefined) {
+      expressionAttributeValues[":title"] = title
+      expressionAttributeNames["#title"] = "title"
+      updateExpression += ", #title = :title"
     }
 
-    const ExpressionAttributeValues = marshall(expressionAttributeValues, {
-      removeUndefinedValues: true,
-    })
-    console.log(
-      "TCL ~ updateMovie ~ ExpressionAttributeValues:",
-      ExpressionAttributeValues
-    )
+    if (director !== undefined) {
+      expressionAttributeValues[":director"] = director
+      expressionAttributeNames["#director"] = "director"
+      updateExpression += ", #director = :director"
+    }
+
+    if (year !== undefined) {
+      expressionAttributeValues[":year"] = year
+      expressionAttributeNames["#year"] = "year"
+      updateExpression += ", #year = :year"
+    }
 
     const params = {
       TableName: "MoviesTable",
-      Key: marshall({ id }),
-      UpdateExpression:
-        "set #title = :title, #director = :director, #year = :year, modifiedAt = :modifiedAt",
-      ExpressionAttributeNames: {
-        "#title": "title",
-        "#director": "director",
-        "#year": "year",
-      },
-      ExpressionAttributeValues,
+      Key: marshall({ id }, { removeUndefinedValues: true }),
+      UpdateExpression: updateExpression,
+      ExpressionAttributeNames: expressionAttributeNames,
+      ExpressionAttributeValues: marshall(expressionAttributeValues, {
+        removeUndefinedValues: true,
+      }),
       ReturnValues: "ALL_NEW",
     }
 
