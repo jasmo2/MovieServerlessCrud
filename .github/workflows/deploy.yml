@@ -24,7 +24,7 @@ jobs:
         npm install
 
     - name: Install Serverless Framework
-      run: npm install -g serverless
+      run: npm install -g serverless@latest
 
     - name: Deploy to AWS (Dev)
       if: github.ref == 'refs/heads/dev'
