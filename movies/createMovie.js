@@ -16,6 +16,7 @@ const createNewMovie = (title, director, year) => {
     director,
     year,
     createAt,
+    modifiedAt: createAt,
   }
 }
 

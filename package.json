@@ -8,5 +8,9 @@
     "express": "^4.19.2",
     "serverless-http": "^3.2.0",
     "uuid": "^11.0.3"
+  },
+  "scripts": {
+    "deploy:dev": "sls deploy --stage dev --verbose",
+    "deploy:prod": "sls deploy --stage prod"
   }
 }

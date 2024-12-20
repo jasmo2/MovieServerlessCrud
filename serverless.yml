@@ -55,3 +55,9 @@ functions:
       - httpApi:
           path: /movies/{id}
           method: get
+  updateMovie:
+    handler: movies/updateMovie.updateMovie
+    events:
+      - httpApi:
+          path: /movies/{id}
+          method: put
