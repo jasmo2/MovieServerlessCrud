@@ -1,12 +1,13 @@
 const { DynamoDBClient, ScanCommand } = require("@aws-sdk/client-dynamodb")
 const { unmarshall } = require("@aws-sdk/util-dynamodb")
+const { databaseName } = require("./env.js")
 
 const getMovies = async () => {
   try {
     const client = new DynamoDBClient()
 
     const command = new ScanCommand({
-      TableName: "MoviesTable",
+      TableName: databaseName,
     })
 
     const result = await client.send(command)

@@ -1,5 +1,6 @@
 const { DynamoDBClient, GetItemCommand } = require("@aws-sdk/client-dynamodb")
 const { unmarshall } = require("@aws-sdk/util-dynamodb")
+const { databaseName } = require("./env.js")
 
 const getMovie = async (event) => {
   try {
@@ -7,7 +8,7 @@ const getMovie = async (event) => {
     const { id } = event.pathParameters
 
     const command = new GetItemCommand({
-      TableName: "MoviesTable",
+      TableName: databaseName,
       Key: {
         id: { S: id },
       },

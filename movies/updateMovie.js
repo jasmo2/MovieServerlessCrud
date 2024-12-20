@@ -4,6 +4,7 @@ const {
   UpdateItemCommand,
 } = require("@aws-sdk/client-dynamodb")
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb")
+const { databaseName } = require("./env.js")
 
 const updateMovie = async (event) => {
   try {
@@ -19,7 +20,7 @@ const updateMovie = async (event) => {
 
     // Check if the movie exists
     const getItemParams = {
-      TableName: "MoviesTable",
+      TableName: databaseName,
       Key: marshall({ id }),
     }
     const getItemCommand = new GetItemCommand(getItemParams)
@@ -62,7 +63,7 @@ const updateMovie = async (event) => {
     }
 
     const params = {
-      TableName: "MoviesTable",
+      TableName: databaseName,
       Key: marshall({ id }, { removeUndefinedValues: true }),
       UpdateExpression: updateExpression,
       ExpressionAttributeNames: expressionAttributeNames,

@@ -9,14 +9,46 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stackName: ${self:service}-${opt:stage, 'dev'}
+  # Define a dynamic stack name based on the service name and stage
+  stackName: ${self:service}-${opt:stage, 'dev'} 
+  # Configure log retention for CloudWatch Logs
+  logRetentionInDays: 7 
+  # Define environment variables accessible to your functions
+  environment:
+    TABLE_NAME: ${self:service}-${opt:stage, 'dev'}-MoviesTable 
+  # Define IAM permissions for DynamoDB interactions
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action: 
+        - "dynamodb:PutItem"
+        - "dynamodb:GetItem"
+        - "dynamodb:Scan"
+        - "dynamodb:UpdateItem"
+        - "dynamodb:DeleteItem"
+      Resource:
+        Fn::Sub: "arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:provider.environment.TABLE_NAME}" 
+  # Add tags to resources for better organization and identification
+  tags:
+    Project: ${self:service}
+    Environment: ${opt:stage, 'dev'}
+    Owner: jasmo2github 
+
+custom:
+  # Define stages and their corresponding table names
+  stages:
+    dev:
+      tableName: ${self:service}-dev-MoviesTable
+    prod:
+      tableName: ${self:service}-prod-MoviesTable
 
 resources:
   Resources:
+    # Define the DynamoDB table
     MoviesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:service}-${opt:stage, 'dev'}-MoviesTable
+        # Dynamically set the table name based on the stage
+        TableName: ${self:custom.stages.${opt:stage}.tableName}
         BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: id
@@ -25,38 +57,42 @@ resources:
           - AttributeName: id
             KeyType: HASH
 
-
 functions:
   api:
     handler: handler.hello
     events:
-      - httpApi: 
+      - httpApi:
           path: /
           method: get
+
   createMovie:
     handler: movies/createMovie.createMovie
     events:
       - httpApi:
           path: /movies
           method: post
+
   getMovies:
     handler: movies/getMovies.getMovies
     events:
       - httpApi:
           path: /movies
           method: get
+
   getMovie:
     handler: movies/getMovie.getMovie
     events:
       - httpApi:
           path: /movies/{id}
           method: get
+
   updateMovie:
     handler: movies/updateMovie.updateMovie
     events:
       - httpApi:
           path: /movies/{id}
           method: put
+
   delete:
     handler: movies/deleteMovie.deleteMovie
     events:
