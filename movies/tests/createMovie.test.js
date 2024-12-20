@@ -48,6 +48,7 @@ describe("createMovie", () => {
       id: "84a35bbf-a204-4c52-83ba-8e831d02e2a5",
       modifiedAt: "2024-12-20T01:53:27.674Z",
       title: "Inception",
+      year: 2010,
     })
   })
 

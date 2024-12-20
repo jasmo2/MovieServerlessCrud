@@ -1,6 +1,7 @@
 const { v4 } = require("uuid")
 const { DynamoDBClient, PutItemCommand } = require("@aws-sdk/client-dynamodb")
 const { marshall } = require("@aws-sdk/util-dynamodb")
+const { databaseName } = require("./env.js")
 
 const createDynamoDBClient = () => {
   return new DynamoDBClient()
@@ -22,7 +23,7 @@ const createNewMovie = (title, director, year) => {
 
 const addMovieToDB = async (client, newMovie) => {
   const command = new PutItemCommand({
-    TableName: "MoviesTable",
+    TableName: databaseName,
     Item: marshall(newMovie),
   })
 

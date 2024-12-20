@@ -3,6 +3,7 @@ const {
   DeleteItemCommand,
 } = require("@aws-sdk/client-dynamodb")
 const { marshall } = require("@aws-sdk/util-dynamodb")
+const { databaseName } = require("./env.js")
 
 const deleteMovie = async (event) => {
   try {
@@ -10,7 +11,7 @@ const deleteMovie = async (event) => {
     const { id } = event.pathParameters
 
     const params = {
-      TableName: "MoviesTable",
+      TableName: databaseName,
       Key: marshall({ id }),
     }
 
