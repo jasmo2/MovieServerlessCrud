@@ -15,6 +15,9 @@ authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 
 This project demonstrates how to develop and deploy a simple Node.js-based movie management API service running on AWS Lambda using the Serverless Framework. The API allows you to create, read, update, and delete movie records stored in a DynamoDB table.
 
+## Video explanation
+https://www.loom.com/share/d0a78bf386034cae9e720a14a8941d1b
+
 ## Project Structure
 
 - **handler.js**: Contains the main entry point for the API.
