@@ -4,6 +4,7 @@
   "description": "",
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.716.0",
+    "@aws-sdk/util-dynamodb": "^3.716.0",
     "aws-sdk": "^2.1692.0",
     "express": "^4.19.2",
     "serverless-http": "^3.2.0",
@@ -11,6 +12,10 @@
   },
   "scripts": {
     "deploy:dev": "sls deploy --stage dev --verbose",
-    "deploy:prod": "sls deploy --stage prod"
+    "deploy:prod": "sls deploy --stage prod",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

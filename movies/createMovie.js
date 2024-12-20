@@ -30,15 +30,23 @@ const addMovieToDB = async (client, newMovie) => {
 }
 
 const createMovie = async (event) => {
-  const client = createDynamoDBClient()
-  const { title, director, year } = JSON.parse(event.body)
-  const newMovie = createNewMovie(title, director, year)
+  try {
+    const client = createDynamoDBClient()
+    const { title, director, year } = JSON.parse(event.body)
+    const newMovie = createNewMovie(title, director, year)
 
-  await addMovieToDB(client, newMovie)
+    await addMovieToDB(client, newMovie)
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify(newMovie),
+    return {
+      statusCode: 201,
+      body: JSON.stringify(newMovie),
+    }
+  } catch (error) {
+    console.log(error)
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: error.message }),
+    }
   }
 }
 

@@ -1,5 +1,6 @@
 const {
   DynamoDBClient,
+  GetItemCommand,
   UpdateItemCommand,
 } = require("@aws-sdk/client-dynamodb")
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb")
@@ -8,6 +9,31 @@ const updateMovie = async (event) => {
   try {
     const client = new DynamoDBClient()
     const { id } = event.pathParameters
+
+    if (!id) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: "Movie ID is required" }),
+      }
+    }
+
+    // Check if the movie exists
+    const getItemParams = {
+      TableName: "MoviesTable",
+      Key: marshall({ id }),
+    }
+    const getItemCommand = new GetItemCommand(getItemParams)
+    const record = await client.send(getItemCommand)
+
+    const movie = record.Item ? unmarshall(record.Item) : null
+
+    if (!movie) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: "Movie ID does not exist" }),
+      }
+    }
+
     const { title, director, year } = JSON.parse(event.body)
     const modifiedAt = new Date().toISOString()
 
